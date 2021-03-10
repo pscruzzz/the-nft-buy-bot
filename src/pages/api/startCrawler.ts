@@ -11,8 +11,8 @@ export default async function startCrawler(
     query: { id }
   } = request
 
-  const divElement = await getPage(process.env.IS_DEV)
-  console.log(divElement)
+  const checkoutLink = await getPage(process.env.IS_DEV)
+  console.log(checkoutLink)
 
-  return response.status(201).send('hey')
+  return response.status(201).send(checkoutLink)
 }
