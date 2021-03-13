@@ -1,18 +1,12 @@
 /* eslint-disable indent */
 import puppeteer, { Page } from 'puppeteer-core'
-import { getOptions } from './chromeOptions'
-import chromium from 'chrome-aws-lambda'
+import { getOptions } from './chromiumOptions'
 
 export async function getPage(isDev: string): Promise<any> {
   const options = await getOptions(isDev === 'true')
   const browser = await puppeteer.launch(options)
 
-  /* const browser =
-    isDev === 'true'
-      ? await puppeteer.launch(options)
-      : await chromium.puppeteer.launch(options) */
-
-  const page: any = await browser.newPage()
+  const page: Page = await browser.newPage()
 
   await page.goto(process.env.PDP_URL, { waitUntil: 'domcontentloaded' })
 
