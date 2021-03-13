@@ -7,6 +7,7 @@ Hey there! How is it going?
 * [React](https://pt-br.reactjs.org/docs/hooks-intro.html)
 * [Next.Js](https://nextjs.org/)
 * [Puppeteer](https://pptr.dev/)
+* [JWT](https://jwt.io/)
 * [SWR](https://swr.vercel.app/)
 * [Styled-Components](https://styled-components.com/)
 * [Typescript](https://www.typescriptlang.org/)
