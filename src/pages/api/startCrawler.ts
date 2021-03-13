@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Page } from 'puppeteer-core'
 
 import { getPage } from './_lib/chromium'
 
