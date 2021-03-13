@@ -7,10 +7,6 @@ export default async function startCrawler(
   request: NextApiRequest,
   response: NextApiResponse
 ): Promise<void> {
-  const {
-    query: { id }
-  } = request
-
   const checkoutLink = await getPage(process.env.IS_DEV)
   console.log(checkoutLink)
 
