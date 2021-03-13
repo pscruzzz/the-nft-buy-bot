@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 
 interface AuthContextData {
   signIn(email: string, accessKey: string): Promise<AxiosResponse<any>>
+  tokenVerify(authToken: string): Promise<AxiosResponse<any>>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -14,11 +15,29 @@ const AuthContextProvider: React.FC = ({ children }) => {
       accessKey
     })
 
-    return response.data.token
+    if (response.status === 201) {
+      return response.data.token
+    } else {
+      return response.data.message
+    }
+  }
+
+  async function tokenVerify(authToken: string) {
+    const response = await axios.post('/api/verifyAuth', {
+      authToken
+    })
+
+    if (response.status === 201) {
+      return response.data.authToken
+    } else {
+      return response.data.message
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ signIn }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ signIn, tokenVerify }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 

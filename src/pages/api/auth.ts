@@ -5,7 +5,10 @@ import authConfig from '../../config/auth'
 interface IRequestBody {
   email: string
   accessKey: string
-  token?: string
+}
+
+interface IRequestCookies {
+  [key: string]: string
 }
 
 export default async function auth(
@@ -13,13 +16,17 @@ export default async function auth(
   response: NextApiResponse
 ): Promise<void> {
   const requestBody: IRequestBody = request.body
+  const requestCookies: IRequestCookies = request.cookies
+
+  console.log(requestCookies.authToken)
 
   try {
-    verify(requestBody.token, authConfig.jwt.secret)
+    verify(requestCookies.authToken, authConfig.jwt.secret)
 
-    return response
-      .status(201)
-      .send({ token: requestBody.token, message: 'token is still valid' })
+    return response.status(201).send({
+      authToken: requestCookies.authToken,
+      message: 'token is still valid'
+    })
   } catch {
     if (!requestBody.accessKey || !requestBody.email) {
       return response
@@ -38,11 +45,23 @@ export default async function auth(
 
     const { secret, expiresIn } = authConfig.jwt
 
-    const token = sign({}, secret, {
+    const authToken = sign({}, secret, {
       subject: process.env.LOGIN_EMAIL,
       expiresIn
     })
 
-    return response.status(201).send({ token, message: 'new token generated' })
+    const now = new Date()
+    const time = now.getTime()
+    const expireTime = time + 60 * 36000
+    now.setTime(expireTime)
+
+    response.setHeader(
+      'Set-Cookie',
+      `authToken=${authToken}; expires=${now.toUTCString()} ; path=/ ; secure ; HttpOnly`
+    )
+
+    return response
+      .status(201)
+      .send({ authToken, message: 'new token generated' })
   }
 }

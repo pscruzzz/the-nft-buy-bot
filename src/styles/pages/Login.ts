@@ -46,11 +46,11 @@ export const Card = styled.div`
     margin-top: 4rem;
     background: ${props => props.theme.colors.background};
     border-radius: 5rem;
-    font: 500 3rem 'Montserrat Alternates', sans-serif;
+    font: 200 2rem 'Montserrat', sans-serif;
     text-align: center;
 
     ::placeholder {
-      font: 500 2rem 'Montserrat Alternates', sans-serif;
+      font: 300 2rem 'Montserrat', sans-serif;
       text-align: center;
     }
   }

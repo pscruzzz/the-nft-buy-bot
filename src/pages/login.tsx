@@ -1,6 +1,7 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Container, Card } from '../styles/pages/Login'
 import { useAuth } from '../hooks/auth'
+import Router from 'next/router'
 
 const Login: React.FC = () => {
   const { signIn } = useAuth()
@@ -14,26 +15,19 @@ const Login: React.FC = () => {
   const [currentPasswordValue, setCurrentPasswordValue] = useState('')
   const [currentSubmit, setCurrentSubmit] = useState(0)
 
-  console.log(currentSubmit)
-
-  function setCookie(name, value) {
-    document.cookie = name + '=' + (value || '') + '; path=/'
-  }
-
   const handleSubmit = useCallback(async () => {
     if (currentSubmit === 1) {
       try {
-        const token = await signIn(currentEmailValue, currentPasswordValue)
-        console.log(token)
-        setCookie('authCookie', token)
+        await signIn(currentEmailValue, currentPasswordValue)
+        Router.push('/')
       } catch {
+        setCurrentEmailValue('')
+        setCurrentPasswordValue('')
         setCurrentSubmit(0)
       }
     } else {
       currentSubmit === 0 ? setCurrentSubmit(1) : setCurrentSubmit(0)
     }
-
-    console.log(currentPasswordValue)
   }, [currentEmailValue, currentPasswordValue, currentSubmit])
 
   return (
