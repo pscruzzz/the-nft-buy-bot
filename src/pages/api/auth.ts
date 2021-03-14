@@ -18,7 +18,7 @@ export default async function auth(
   const requestBody: IRequestBody = request.body
   const requestCookies: IRequestCookies = request.cookies
 
-  console.log(requestCookies.authToken)
+  // console.log(requestCookies.authToken)
 
   try {
     verify(requestCookies.authToken, authConfig.jwt.secret)

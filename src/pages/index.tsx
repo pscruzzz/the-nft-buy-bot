@@ -57,9 +57,7 @@ interface IHomeProps {
   authToken: string | null
 }
 
-const Home: React.FC<IHomeProps> = ({ authToken }) => {
-  console.log(authToken, 'Home authToken')
-
+const Home: React.FC<IHomeProps> = () => {
   return (
     <Container>
       <Head>
