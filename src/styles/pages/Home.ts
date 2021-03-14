@@ -100,11 +100,11 @@ export const StyledForm = styled.form`
     box-shadow: 5px 5px 5px 1px rgba(89, 80, 79, 0.1),
       -5px -5px 7px 0 rgba(247, 246, 245, 0.5);
     border-radius: 5rem;
-    -webkit-transition: box-shadow 0.25s ease;
-    -moz-transition: box-shadow 0.25s ease;
-    -ms-transition: box-shadow 0.25s ease;
-    -o-transition: box-shadow 0.25s ease;
-    transition: box-shadow 0.25s ease;
+    -webkit-transition: box-shadow 0.5s ease;
+    -moz-transition: box-shadow 0.5s ease;
+    -ms-transition: box-shadow 0.5s ease;
+    -o-transition: box-shadow 0.5s ease;
+    transition: box-shadow 0.5s ease;
 
     :hover {
       box-shadow: 0px 0px rgba(89, 80, 79, 0);

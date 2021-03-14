@@ -16,7 +16,10 @@ export default async function startCrawler(
   try {
     verify(requestCookies.authToken, authConfig.jwt.secret)
 
-    const checkoutLink = await getPage(process.env.IS_DEV)
+    const checkoutLink = await getPage(
+      process.env.IS_DEV,
+      requestCookies.authToken
+    )
 
     return response.status(201).send(checkoutLink)
   } catch {
