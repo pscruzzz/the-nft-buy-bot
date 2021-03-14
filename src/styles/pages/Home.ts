@@ -41,4 +41,27 @@ export const Wrapper = styled.div`
     /* margin-right: -9vw */
     /* text-align: right; */
   }
+
+  .panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+  }
+`
+export const CurrentQuery = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const HistoryLogs = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
