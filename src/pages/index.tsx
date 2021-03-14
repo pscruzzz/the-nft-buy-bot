@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Head from 'next/head'
 import axios from 'axios'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { Container } from '../styles/pages/Home'
+import { Container, Wrapper } from '../styles/pages/Home'
 
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
@@ -60,7 +60,20 @@ const Home: React.FC<IHomeProps> = ({ authToken }) => {
       <Head>
         <title>Homepage</title>
       </Head>
-      <h1>Puppeteer</h1>
+      <Wrapper>
+        <div className="logo">
+          <div className="nft">
+            <div className="letter">n</div>
+            <div className="letter">f</div>
+            <div className="letter">t</div>
+          </div>
+          <div className="bot">
+            <div className="letter">B</div>
+            <div className="letter">O</div>
+            <div className="letter">T</div>
+          </div>
+        </div>
+      </Wrapper>
     </Container>
   )
 }
