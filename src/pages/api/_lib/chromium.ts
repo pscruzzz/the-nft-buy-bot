@@ -4,9 +4,28 @@ import { getOptions } from './chromiumOptions'
 import { verify } from 'jsonwebtoken'
 import authConfig from '../../../config/auth'
 
+function dateMaker() {
+  const dt = new Date()
+  // console.log(dt) // Gives Tue Mar 22 2016 09:30:00 GMT+0530 (IST)
+
+  dt.setTime(dt.getTime() + dt.getTimezoneOffset() * 60 * 1000)
+  // console.log(dt) // Gives Tue Mar 22 2016 04:00:00 GMT+0530 (IST)
+
+  const offset = -300 // Timezone offset for EST in minutes.
+  const estDate = new Date(dt.getTime() + offset * 60 * 1000)
+  // console.log(estDate) // Gives Mon Mar 21 2016 23:00:00 GMT+0530 (IST)
+
+  return estDate
+}
+
 export async function getPage(isDev: string, authToken: string): Promise<any> {
   try {
     verify(authToken, authConfig.jwt.secret)
+
+    const logs = []
+
+    logs.push({ timestamp: dateMaker(), log: 'Crawler Started', data: null })
+
     const options = await getOptions(isDev === 'true')
     const browser = await puppeteer.launch(options)
 
@@ -30,6 +49,12 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
       { waitUntil: 'domcontentloaded' }
     )
 
+    logs.push({
+      timestamp: dateMaker(),
+      log: 'Checkout Link Acquired',
+      data: checkoutLink
+    })
+
     await page.goto(checkoutLink, { waitUntil: 'domcontentloaded' })
 
     await page.waitForSelector('#email', {
@@ -52,6 +77,12 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
     await page.keyboard.type(pass)
     await page.$eval('.MuiButton-contained', (el: HTMLElement) => el.click())
 
+    logs.push({
+      timestamp: dateMaker(),
+      log: 'Crawler Logged',
+      data: null
+    })
+
     await page.waitForSelector('.BuilderBodySemiBold', {
       visible: true
     })
@@ -73,9 +104,13 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
       { waitUntil: 'domcontentloaded' }
     )
 
-    console.log(checkoutLink)
+    logs.push({
+      timestamp: dateMaker(),
+      log: 'Buy Button pressed',
+      data: null
+    })
 
-    return checkoutLink
+    return logs
   } catch {
     return 'Forbidden'
   }

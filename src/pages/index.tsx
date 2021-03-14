@@ -59,13 +59,9 @@ interface IHomeProps {
 }
 
 const Home: React.FC<IHomeProps> = () => {
-  const logs = []
-
-  const offset = 0
-  const clientDate = new Date()
-  const utc = clientDate.getTime()
-  const serverDate = new Date(utc + 3600000 * offset)
-  console.log(serverDate)
+  const currentDate = new Date()
+  const currentDateTime = currentDate.getTimezoneOffset()
+  console.log(currentDateTime)
 
   return (
     <Container>
