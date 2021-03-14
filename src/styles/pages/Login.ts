@@ -67,5 +67,27 @@ export const Card = styled.div`
       text-align: center;
       color: rgba(86, 66, 61, 0.5);
     }
+
+    :focus {
+      padding-bottom: 0rem;
+      ::placeholder {
+        color: transparent;
+      }
+    }
+  }
+
+  input[type='password'] {
+    padding-bottom: 1rem;
+    font-size: 3.5rem;
+    font-weight: 500;
+    :not(:placeholder-shown) {
+      padding-bottom: 0rem;
+    }
+    :focus {
+      padding-bottom: 0rem;
+      ::placeholder {
+        color: transparent;
+      }
+    }
   }
 `
