@@ -38,4 +38,8 @@ export default createGlobalStyle`
     font-size: 4rem
   }
 
+  button{
+    cursor: pointer;
+  }
+
 `

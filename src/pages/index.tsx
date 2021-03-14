@@ -6,7 +6,8 @@ import {
   Container,
   Wrapper,
   CurrentQuery,
-  HistoryLogs
+  HistoryLogs,
+  StyledForm
 } from '../styles/pages/Home'
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -76,25 +77,75 @@ const Home: React.FC<IHomeProps> = () => {
             <div className="letter">T</div>
           </div>
         </div>
-        <div className="panel">
-          <CurrentQuery>
-            <h2>Current Query</h2>
-            <h4>endpoint</h4>
+        <StyledForm action="">
+          <div>
+            <h4>Endpoint</h4>
             <input type="text" placeholder="https://{{baseURL}}/{{item}}" />
-            <button type="button" />
-            <div className="events"></div>
+          </div>
+          <div>
+            <h4>Date and Time</h4>
+            <input type="text" placeholder="Sun, 14 Feb 2021 04:12:45 GMT" />
+          </div>
+          <span className="outerShadow">
+            <button type="button">Run Crawler</button>
+          </span>
+        </StyledForm>
+        <div className="panels">
+          <CurrentQuery>
+            <h2>Current Events</h2>
+            <div className="events">
+              <div className="log">
+                <div>
+                  <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                  <p>initialized endpoint</p>
+                  <div>https://baseURL.com/cryptort</div>
+                </div>
+                <div>
+                  <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                  <p>Logged in account</p>
+                  <div>https://baseURL.com/cryptort</div>
+                </div>
+                <div>
+                  <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                  <p>Clicked on buy button</p>
+                  <div>https://baseURL.com/cryptort</div>
+                </div>
+                <div>
+                  <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                  <p>initialized endpoint</p>
+                  <div>https://baseURL.com/cryptort</div>
+                </div>
+                <div>
+                  <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                  <p>Logged in account</p>
+                  <div>https://baseURL.com/cryptort</div>
+                </div>
+                <div>
+                  <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                  <p>Clicked on buy button</p>
+                  <div>https://baseURL.com/cryptort</div>
+                </div>
+              </div>
+            </div>
           </CurrentQuery>
           <HistoryLogs>
             <h2>Log History</h2>
             <div className="log">
-              <h3>Sun, 14 Feb 2021 04:12:45 GMT</h3>
               <div>
-                <h4>endpoint</h4>
+                <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                <p>initialized endpoint</p>
                 <div>https://baseURL.com/cryptort</div>
               </div>
-              <p>Logged in account</p>
-              <p>Logged in account</p>
-              <p>Clicked on buy button</p>
+              <div>
+                <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                <p>Logged in account</p>
+                <div>https://baseURL.com/cryptort</div>
+              </div>
+              <div>
+                <h4>Sun, 14 Feb 2021 04:12:45 GMT</h4>
+                <p>Clicked on buy button</p>
+                <div>https://baseURL.com/cryptort</div>
+              </div>
             </div>
           </HistoryLogs>
         </div>
