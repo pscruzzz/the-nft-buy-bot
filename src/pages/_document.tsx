@@ -48,7 +48,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;500&display=swap"
             rel="stylesheet"
           />
 

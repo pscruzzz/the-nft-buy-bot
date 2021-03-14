@@ -13,9 +13,9 @@ export const Container = styled.div`
 
 export const Card = styled.div`
   background: ${props => props.theme.colors.background};
-  height: 50%;
-  width: 50%;
-  max-width: 900px;
+  height: 40%;
+  width: 40%;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,15 +25,28 @@ export const Card = styled.div`
     -8px -8px 10px 1px rgba(242, 237, 233, 0.7);
   border-radius: 5rem;
 
-  h1 {
-    margin-bottom: 2rem;
-    color: ${props => props.theme.colors.text};
-    text-align: center;
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 30%;
+    width: 100%;
+
+    h1 {
+      font-weight: 500;
+      color: ${props => props.theme.colors.background};
+      letter-spacing: 0.5rem;
+      text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1),
+        -3px -3px 3px rgba(255, 255, 255, 0.2),
+        -3px -3px 8px rgba(255, 255, 255, 0.2);
+    }
   }
 
   h3 {
-    color: ${props => props.theme.colors.text};
+    color: rgba(86, 66, 61, 0.2);
     text-align: center;
+    margin-bottom: 1rem;
   }
 
   input {
@@ -42,7 +55,7 @@ export const Card = styled.div`
     box-shadow: 5px 5px 7px 1px rgba(89, 80, 79, 0.1) inset,
       -5px -5px 7px 0 rgba(247, 246, 245, 0.5) inset;
     width: 60%;
-    height: 15%;
+    height: 50%;
     margin-top: 4rem;
     background: ${props => props.theme.colors.background};
     border-radius: 5rem;
@@ -52,6 +65,7 @@ export const Card = styled.div`
     ::placeholder {
       font: 300 2rem 'Montserrat', sans-serif;
       text-align: center;
+      color: rgba(86, 66, 61, 0.5);
     }
   }
 `

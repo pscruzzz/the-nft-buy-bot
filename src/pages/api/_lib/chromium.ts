@@ -16,18 +16,6 @@ export async function getPage(isDev: string): Promise<any> {
 
   const checkoutLink = await page.evaluate(
     async () => {
-      /* async function waitLoad() {
-        await new Promise(function (resolve) {
-          setTimeout(resolve, 1)
-        })
-        if (document.querySelectorAll('a.MuiButtonBase-root')[0]) {
-          return
-        }
-        await waitLoad()
-      }
-
-      await waitLoad() */
-
       const buyButton = document.querySelectorAll(
         'a.MuiButtonBase-root'
       )[0] as HTMLElement
@@ -64,7 +52,6 @@ export async function getPage(isDev: string): Promise<any> {
     visible: true
   })
 
-  // await page.goto(checkoutLink, { waitUntil: 'networkidle0' })
   await page.goto(checkoutLink)
 
   await page.waitForSelector('.hoverLightBoxShadow img', {
@@ -73,18 +60,6 @@ export async function getPage(isDev: string): Promise<any> {
 
   await page.evaluate(
     async () => {
-      /* async function waitLoad() {
-        await new Promise(function (resolve) {
-          setTimeout(resolve, 1)
-        })
-        if (document.querySelectorAll('.jss225 div')[0]) {
-          return
-        }
-        await waitLoad()
-      }
-
-      await waitLoad() */
-
       document.querySelector('[class^=jss2] div').click()
     },
     { waitUntil: 'domcontentloaded' }
