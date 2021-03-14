@@ -11,7 +11,7 @@ function dateMaker() {
   dt.setTime(dt.getTime() + dt.getTimezoneOffset() * 60 * 1000)
   // console.log(dt) // Gives Tue Mar 22 2016 04:00:00 GMT+0530 (IST)
 
-  const offset = -300 // Timezone offset for EST in minutes.
+  const offset = -240 // Timezone offset for EST in minutes.
   const estDate = new Date(dt.getTime() + offset * 60 * 1000)
   // console.log(estDate) // Gives Mon Mar 21 2016 23:00:00 GMT+0530 (IST)
 
