@@ -5,4 +5,5 @@ declare interface HTMLElement {
 
 declare interface Element {
   click: () => void
+  innerText: string
 }
