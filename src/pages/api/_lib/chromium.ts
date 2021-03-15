@@ -3,28 +3,45 @@ import puppeteer, { Page } from 'puppeteer-core'
 import { getOptions } from './chromiumOptions'
 import { verify } from 'jsonwebtoken'
 import authConfig from '../../../config/auth'
+import axios from 'axios'
 
 function dateMaker() {
-  const dt = new Date()
-  // console.log(dt) // Gives Tue Mar 22 2016 09:30:00 GMT+0530 (IST)
+  const dataOf = new Date().toLocaleString('en-US', {
+    hour12: false,
+    timeZone: 'America/New_York'
+  })
 
-  dt.setTime(dt.getTime() + dt.getTimezoneOffset() * 60 * 1000)
-  // console.log(dt) // Gives Tue Mar 22 2016 04:00:00 GMT+0530 (IST)
+  return dataOf
+}
 
-  const offset = -240 // Timezone offset for EST in minutes.
-  const estDate = new Date(dt.getTime() + offset * 60 * 1000)
-  // console.log(estDate) // Gives Mon Mar 21 2016 23:00:00 GMT+0530 (IST)
+async function persistLogs(
+  timestamp: string,
+  artName: string,
+  log: string,
+  data: string,
+  authToken: string
+): Promise<void> {
+  const response = await axios.post(
+    process.env.BASE_URL + '/api/logRegister',
+    {
+      timestamp,
+      artName,
+      log,
+      data
+    },
+    {
+      headers: { authToken }
+    }
+  )
 
-  return estDate
+  const responseData = await response.data
+
+  return responseData
 }
 
 export async function getPage(isDev: string, authToken: string): Promise<any> {
   try {
     verify(authToken, authConfig.jwt.secret)
-
-    const logs = []
-
-    logs.push({ timestamp: dateMaker(), log: 'Crawler Started', data: null })
 
     const options = await getOptions(isDev === 'true')
     const browser = await puppeteer.launch(options)
@@ -32,6 +49,20 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
     const page: Page = await browser.newPage()
 
     await page.goto(process.env.PDP_URL, { waitUntil: 'domcontentloaded' })
+
+    /* await page.$eval('.MuiGrid-root p', e => {
+      e.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
+    }) */
+
+    await page.waitForSelector('.MuiGrid-root p')
+    const artName = await page.$eval(
+      '.MuiGrid-root p',
+      (el: HTMLElement) => el.textContent
+    )
+
+    // const artName = 'floater'
+
+    await persistLogs(dateMaker(), artName, 'Crawler Started', null, authToken)
 
     await page.waitForSelector('a.MuiButtonBase-root', {
       visible: true
@@ -49,11 +80,13 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
       { waitUntil: 'domcontentloaded' }
     )
 
-    logs.push({
-      timestamp: dateMaker(),
-      log: 'Checkout Link Acquired',
-      data: checkoutLink
-    })
+    await persistLogs(
+      dateMaker(),
+      artName,
+      'Checkout Link Acquired',
+      checkoutLink,
+      authToken
+    )
 
     await page.goto(checkoutLink, { waitUntil: 'domcontentloaded' })
 
@@ -76,12 +109,7 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
     await page.focus('#password')
     await page.keyboard.type(pass)
     await page.$eval('.MuiButton-contained', (el: HTMLElement) => el.click())
-
-    logs.push({
-      timestamp: dateMaker(),
-      log: 'Crawler Logged',
-      data: null
-    })
+    await persistLogs(dateMaker(), artName, 'Crawler Logged', null, authToken)
 
     await page.waitForSelector('.BuilderBodySemiBold', {
       visible: true
@@ -104,13 +132,60 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
       { waitUntil: 'domcontentloaded' }
     )
 
-    logs.push({
-      timestamp: dateMaker(),
-      log: 'Buy Button pressed',
-      data: null
+    await persistLogs(
+      dateMaker(),
+      artName,
+      'Buy Button pressed',
+      null,
+      authToken
+    )
+
+    // const currentURL = await page.url()
+
+    const productType = await page.evaluate(() => {
+      const el = document.querySelector(
+        '.MuiGrid-root .MuiTypography-root.MuiTypography-body1'
+      )
+
+      return el?.innerText === 'You’ve successfully entered the drawing! 🎉'
+        ? el.innerText
+        : ''
     })
 
-    return logs
+    const isCheckoutDone =
+      productType === ''
+        ? null
+        : await persistLogs(
+            dateMaker(),
+            artName,
+            'Drawing was bought',
+            productType,
+            authToken
+          )
+
+    page.on('response', async response => {
+      // console.log(response.url())
+      if (response.url() === process.env.REQUEST_URL) {
+        // console.log(response.status())
+        await persistLogs(
+          dateMaker(),
+          artName,
+          `Response Status for BuyButtonRequest was ${response.status()}`,
+          null,
+          authToken
+        )
+        return response.url()
+      }
+    })
+    const lastCall = await persistLogs(
+      dateMaker(),
+      artName,
+      'Process Finalized',
+      null,
+      authToken
+    )
+
+    return lastCall
   } catch {
     return 'Forbidden'
   }

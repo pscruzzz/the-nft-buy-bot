@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/mongodb": "^3.6.9",
     "axios": "^0.21.1",
     "chrome-aws-lambda": "^7.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.4",
     "next": "9.5.2",
     "next-images": "^1.4.1",
     "puppeteer-core": "^8.0.0",
