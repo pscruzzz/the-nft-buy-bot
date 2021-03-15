@@ -132,6 +132,10 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
       { waitUntil: 'domcontentloaded' }
     )
 
+    page.on('dialog', async dialog => {
+      await dialog.accept()
+    })
+
     await persistLogs(
       dateMaker(),
       artName,
@@ -146,7 +150,8 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
       const el = document.querySelector(
         '.MuiGrid-root .MuiTypography-root.MuiTypography-body1'
       )
-      if (el) {
+
+      if (!el) {
         return ''
       }
 

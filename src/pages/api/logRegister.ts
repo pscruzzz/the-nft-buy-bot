@@ -59,7 +59,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         if (err) {
           return response.status(404).json({ ok: false })
         }
-        return response.status(201).json(result)
+
+        return response.status(201).send(result)
       })
   } catch {
     return response.status(401).json({ ok: false })
