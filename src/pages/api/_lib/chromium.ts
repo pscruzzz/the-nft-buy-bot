@@ -146,8 +146,11 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
       const el = document.querySelector(
         '.MuiGrid-root .MuiTypography-root.MuiTypography-body1'
       )
+      if (el) {
+        return ''
+      }
 
-      return el?.innerText === 'You’ve successfully entered the drawing! 🎉'
+      return el.innerText === 'You’ve successfully entered the drawing! 🎉'
         ? el.innerText
         : ''
     })
