@@ -53,7 +53,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const StyledForm = styled.form`
+export const StyledDiv = styled.div`
   width: 92%;
   height: 10rem;
   display: flex;
@@ -62,7 +62,7 @@ export const StyledForm = styled.form`
   margin: 4rem 0rem;
 
   div {
-    width: 35%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -90,6 +90,22 @@ export const StyledForm = styled.form`
         font: 300 2rem 'Montserrat', sans-serif;
         text-align: left;
         color: rgba(86, 66, 61, 0.5);
+      }
+    }
+  }
+
+  .waitUntilDivClass {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+    input {
+      text-align: center;
+      padding-left: 0rem;
+      ::placeholder {
+        text-align: center;
       }
     }
   }

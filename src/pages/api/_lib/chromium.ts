@@ -39,7 +39,11 @@ async function persistLogs(
   return responseData
 }
 
-export async function getPage(isDev: string, authToken: string): Promise<any> {
+export async function getPage(
+  isDev: string,
+  authToken: string,
+  endpoint: string
+): Promise<any> {
   try {
     verify(authToken, authConfig.jwt.secret)
 
@@ -48,7 +52,9 @@ export async function getPage(isDev: string, authToken: string): Promise<any> {
 
     const page: Page = await browser.newPage()
 
-    await page.goto(process.env.PDP_URL, { waitUntil: 'domcontentloaded' })
+    console.log(endpoint)
+
+    await page.goto(endpoint, { waitUntil: 'domcontentloaded' })
 
     /* await page.$eval('.MuiGrid-root p', e => {
       e.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })

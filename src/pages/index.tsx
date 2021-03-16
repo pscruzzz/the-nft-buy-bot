@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import Head from 'next/head'
 import axios from 'axios'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
@@ -7,7 +7,7 @@ import {
   Wrapper,
   CurrentQuery,
   HistoryLogs,
-  StyledForm
+  StyledDiv
 } from '../styles/pages/Home'
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -59,9 +59,66 @@ interface IHomeProps {
 }
 
 const Home: React.FC<IHomeProps> = () => {
-  const currentDate = new Date()
-  const currentDateTime = currentDate.getTimezoneOffset()
-  console.log(currentDateTime)
+  const [endpoint, setEndpoint] = useState('')
+  const [waitUntil, setWaitUntil] = useState('')
+  const [isCrawlerWaiting, setIsCrawlerWaiting] = useState(false)
+  const [isCrawlerRunning, setIsCrawlerRunning] = useState(false)
+  const [countDown, setCountDown] = useState(0)
+
+  const handleEndpointChange = useCallback(e => {
+    setEndpoint(e.target.value)
+  }, [])
+
+  const handleWaitUntilChange = useCallback(e => {
+    console.log(e.target.value)
+    setWaitUntil(e.target.value)
+  }, [])
+
+  const later = delay => new Promise(resolve => setTimeout(resolve, delay))
+
+  useEffect(() => {
+    if (isCrawlerWaiting || isCrawlerRunning) {
+      setTimeout(() => {
+        isCrawlerWaiting
+          ? setCountDown(countDown - 1)
+          : setCountDown(countDown + 1)
+      }, 1000)
+    } else {
+      clearTimeout()
+    }
+  }, [isCrawlerRunning, countDown])
+  console.log(countDown)
+
+  const handleButtonPress = useCallback(async () => {
+    setIsCrawlerWaiting(true)
+    const ESTTime = new Date().toLocaleString('en-US', {
+      hour12: false,
+      timeZone: 'America/New_York'
+    })
+    const startDate = new Date(ESTTime)
+    console.log(startDate, 'startDate')
+    const endDate = new Date(waitUntil)
+    console.log(endDate, 'endDate')
+    const miliseconds = endDate.getTime() - startDate.getTime()
+    console.log(miliseconds, 'miliseconds')
+
+    setCountDown(miliseconds / 1000)
+
+    await later(miliseconds)
+
+    setIsCrawlerWaiting(false)
+    setCountDown(0)
+    setIsCrawlerRunning(true)
+
+    const response = await axios.post('/api/startCrawler', {
+      endpoint
+    })
+    const responseData = await response.data
+    setIsCrawlerRunning(false)
+
+    console.log(responseData)
+    return responseData
+  }, [endpoint, waitUntil])
 
   return (
     <Container>
@@ -81,19 +138,34 @@ const Home: React.FC<IHomeProps> = () => {
             <div className="letter">T</div>
           </div>
         </div>
-        <StyledForm action="">
-          <div>
+        <StyledDiv>
+          <div className="endpointDivClass">
             <h4>Endpoint</h4>
-            <input type="text" placeholder="https://{{baseURL}}/{{item}}" />
+            <input
+              type="text"
+              placeholder="https://{{baseURL}}/{{item}}"
+              onChange={handleEndpointChange}
+            />
           </div>
-          <div>
-            <h4>Date and Time</h4>
-            <input type="text" placeholder="Sun, 14 Feb 2021 04:12:45 GMT" />
+          <div className="waitUntilDivClass">
+            <h4>Wait Until</h4>
+            <input
+              type="text"
+              placeholder="3/15/2021 19:27:31"
+              onChange={handleWaitUntilChange}
+            />
           </div>
           <span className="outerShadow">
-            <button type="button">Run Crawler</button>
+            <button
+              type="button"
+              onClick={() => {
+                handleButtonPress()
+              }}
+            >
+              Run Crawler
+            </button>
           </span>
-        </StyledForm>
+        </StyledDiv>
         <div className="panels">
           <CurrentQuery>
             <h2>Current Events</h2>

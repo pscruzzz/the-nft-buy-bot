@@ -8,17 +8,26 @@ interface IRequestCookies {
   [key: string]: string
 }
 
+interface IRequestBody {
+  endpoint: string
+}
+
 export default async function startCrawler(
   request: NextApiRequest,
   response: NextApiResponse
 ): Promise<void> {
   const requestCookies: IRequestCookies = request.cookies
+  const requestBody: IRequestBody = request.body
+
+  console.log(requestBody, 'requestBody')
+
   try {
     verify(requestCookies.authToken, authConfig.jwt.secret)
 
     const checkoutLink = await getPage(
       process.env.IS_DEV,
-      requestCookies.authToken
+      requestCookies.authToken,
+      requestBody.endpoint
     )
 
     return response.status(201).send(checkoutLink)
