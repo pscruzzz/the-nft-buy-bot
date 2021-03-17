@@ -21,21 +21,24 @@ async function persistLogs(
   data: string,
   authToken: string
 ): Promise<void> {
-  try {
-    await axios.post(
-      process.env.BASE_URL + '/api/logRegister',
-      {
-        timestamp,
-        artName,
-        log,
-        data
-      },
-      {
-        headers: { authToken }
-      }
-    )
-  } catch {}
+  const response = await axios.post(
+    process.env.BASE_URL + '/api/logRegister',
+    {
+      timestamp,
+      artName,
+      log,
+      data
+    },
+    {
+      headers: { authToken }
+    }
+  )
+
+  const responseData = await response.data
+
+  return responseData
 }
+
 export async function getPage(
   isDev: string,
   authToken: string,
